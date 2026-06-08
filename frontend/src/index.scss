@@ -1,0 +1,18 @@
+// 1. מגדירים את משתני הצבעים שלך
+$custom-blue: #1e3d59;
+$custom-cream: #f3f2ef;
+$custom-orange: #ff6e40;
+$custom-yellow: #ffc13b;
+
+// 2. נשתמש ב-Bootstrap עם קונפיגורציית צבעים
+@use "bootstrap" with (
+  $primary: $custom-blue,
+  $warning: $custom-yellow,
+  $danger: $custom-orange,
+  $light: $custom-cream,
+);
+
+// 3. סגנונות נוספים
+body {
+  direction: rtl;
+}

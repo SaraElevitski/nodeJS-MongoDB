@@ -1,12 +1,14 @@
-import './App.css'
+import './App.scss'
 import Home from './components/Home/Home'
+import LogIn from './components/LogIn/LogIn';
+import NavBar from './components/NavBar/NavBar';
 
 function App() {
 
 
   return (
     <>
-      <Home></Home>
+     <LogIn></LogIn>
     </>
   )
 }

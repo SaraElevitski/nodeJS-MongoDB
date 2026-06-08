@@ -1,4 +1,5 @@
 import { useEffect, useState, type FC } from "react";
+
 import "./Home.scss";
 import volunteersService from "../../services/volunteers.service";
 
@@ -29,10 +30,14 @@ const Home: FC<HomeProps> = () => {
     fetchAllData();
   }, []);
 
-  return <div className="Home">Home Component
+  return <div className="Home">
+  
   <div>{listVolunteers && listVolunteers.map((item) => (
       <p key={item._id}>{item.firstName}</p> 
     ))}</div>
+
+
+
   
   
   </div>;
