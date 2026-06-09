@@ -1,14 +1,28 @@
+import { Route, Routes } from 'react-router-dom';
 import './App.scss'
 import Home from './components/Home/Home'
 import LogIn from './components/LogIn/LogIn';
-import NavBar from './components/NavBar/NavBar';
+import MainComp from './components/MainComp/MainComp';
+import SignUp from './components/SignUp/SignUp';
+
 
 function App() {
 
 
   return (
     <>
-     <LogIn></LogIn>
+     <Routes>
+      
+      <Route path='/' element={<MainComp></MainComp>}>
+    
+        <Route index element={<Home></Home>}></Route>
+          <Route path='login' element={<LogIn></LogIn>}></Route>
+        <Route  path='signUp' element={<SignUp></SignUp>}></Route>
+      </Route>
+
+      {/* <Route path='*' element={<NotFound></NotFound>}></Route> */}
+    </Routes>
+
     </>
   )
 }

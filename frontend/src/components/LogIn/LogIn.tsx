@@ -1,149 +1,67 @@
 import type { FC } from "react";
 import "./LogIn.scss";
-import { Form, Button, Card, Container, Col, Row } from "react-bootstrap";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import type { Volunteer } from "../../models/volunteers.model";
+import { Form, Button, Card, Container } from "react-bootstrap";
 
 interface LogInProps {}
 
 const LogIn: FC<LogInProps> = () => {
-  const validateIsraeliId = (id: string | number): boolean => {
-    const strId = String(id).trim();
-    if (!strId || strId.length > 9 || isNaN(Number(strId))) return false;
-
-    const paddedId = strId.padStart(9, "0");
-
-    const sum = paddedId.split("").reduce((acc, digit, index) => {
-      const num = Number(digit);
-      const weight = index % 2 === 0 ? 1 : 2;
-      let stepResult = num * weight;
-
-      if (stepResult > 9) {
-        stepResult = Math.floor(stepResult / 10) + (stepResult % 10);
-      }
-
-      return acc + stepResult;
-    }, 0);
-
-    return sum % 10 === 0;
-  };
-
-  const myForm = useFormik<Omit<Volunteer, "_id">>({
+  const myForm = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      tz: "",
       email: "",
-      phone: "",
-      specialties: [],
+      password: "",
     },
     onSubmit: (value: any) => {
-      alert("הנתונים נשלחו בהצלחה לחישוב!");
+      alert("הכניסה בוצעה!");
     },
-
     validationSchema: yup.object().shape({
-      firstName: yup.string().required("שדה חובה"),
-      lastName: yup.string().required("שדה חובה"),
-      tz: yup
-        .string()
-        .test("is-valid-id", "מספר תעודת הזהות אינו תקין", (value) => {
-          return validateIsraeliId(value || "");
-        }),
       email: yup
         .string()
-        .email("כתובת האימייל אינה תקינה").required("שדה חובה"),
-      phone: yup.string().required("שדה חובה"),
+        .email("כתובת האימייל אינה תקינה")
+        .required("שדה חובה"),
+      password: yup.string().required("חובה סיסמא"),
     }),
   });
 
   return (
     <div className="LogIn">
-      <Container className="mt-5">
+      <Container >
         <Card
-          className="shadow-sm p-4 bg-light"
-          style={{ maxWidth: "500px", margin: "auto" }}
+          className="shadow-sm p-4 bg-light m-auto mt-5"
+          style={{ maxWidth: "550px" }}
         >
-          <h3 className="mb-4 text-center">הוספת מתנדב חדש</h3>
+          <h3 className="mb-4 text-center">כניסה</h3>
           <Form onSubmit={myForm.handleSubmit}>
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3" controlId="firstName">
-                  <Form.Label>שם פרטי</Form.Label>
-                  <Form.Control
-                    onChange={myForm.handleChange}
-                    value={myForm.values.firstName}
-                    name="firstName"
-                    type="text"
-                    placeholder="שם פרטי"
-                    isInvalid={!!myForm.errors.firstName}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {myForm.errors.firstName}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-
-              <Col md={6}>
-                <Form.Group className="mb-3" controlId="lastName">
-                  <Form.Label>שם משפחה</Form.Label>
-                  <Form.Control
-                    onChange={myForm.handleChange}
-                    value={myForm.values.lastName}
-                    name="lastName"
-                    type="text"
-                    placeholder="שם משפחה"
-                    isInvalid={!!myForm.errors.lastName}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {myForm.errors.lastName}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-            </Row>
-
+            
             <Form.Group className="mb-3" controlId="email">
               <Form.Label>אימייל</Form.Label>
-              <Form.Control type="email" placeholder="name@example.com" onChange={myForm.handleChange}  
-                    name="email"
-                    isInvalid={!!myForm.errors.email}/>
-                      <Form.Control.Feedback type="invalid">
-                    {myForm.errors.email}
-                  </Form.Control.Feedback>
+              <Form.Control
+                type="email"
+                placeholder="name@example.com"
+                onChange={myForm.handleChange}
+                onBlur={myForm.handleBlur}
+                name="email"
+                isInvalid={!!(myForm.touched.email && myForm.errors.email)}
+              />
+              <Form.Control.Feedback type="invalid">
+                {myForm.errors.email as string}
+              </Form.Control.Feedback>
             </Form.Group>
 
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3" controlId="phone">
-                  <Form.Label>טלפון</Form.Label>
-                  <Form.Control type="tel" onChange={myForm.handleChange}
-                    value={myForm.values.phone}
-                    name="phone"
-                       placeholder="0-"
-                       isInvalid={!!myForm.errors.phone}/>
-                  <Form.Control.Feedback type="invalid">
-                    {myForm.errors.phone}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-
-              <Col md={6}>
-                <Form.Group className="mb-3" controlId="phone">
-                  <Form.Label>תעודת זהות</Form.Label>
-                  <Form.Control type="text" onChange={myForm.handleChange}
-                    value={myForm.values.tz}
-                    name="tz"
-                    isInvalid={!!myForm.errors.tz}/>
-                     <Form.Control.Feedback type="invalid">
-                    {myForm.errors.tz}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Form.Group className="mb-3" controlId="formPhone">
-              <Form.Label> התמחויות</Form.Label>
-              <Form.Control type="text" />
+            <Form.Group className="mb-3" controlId="password">
+              <Form.Label>סיסמא</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="password"
+                onChange={myForm.handleChange}
+                onBlur={myForm.handleBlur}
+                name="password"
+                isInvalid={!!(myForm.touched.password && myForm.errors.password)}
+              />
+              <Form.Control.Feedback type="invalid">
+                {myForm.errors.password as string}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Button variant="primary" type="submit" className="w-100">
@@ -155,4 +73,5 @@ const LogIn: FC<LogInProps> = () => {
     </div>
   );
 };
+
 export default LogIn;
