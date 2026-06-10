@@ -6,6 +6,8 @@ class RequestService extends Service {
         super(repo);
         this.volunteerRepo = volunteerRepo
     }
+
+
     async getAll(query) {
         const filters = {}
         if (query['location.areaCode'])
@@ -15,6 +17,7 @@ class RequestService extends Service {
         return super.getAll(filters)
     }
 
+    
     async assignVolunteerToRequest(requestId, volunteerCode, newStatus) {
         const volunteer = await this.volunteerRepo.findOne({ _id: volunteerCode });
         //האם המתנדב קיים

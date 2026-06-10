@@ -33,9 +33,6 @@ class Service {
     }
 
 
-
-
-
     async update(id, data) {
 
         const item = await this.repo.update(id, data);
@@ -51,14 +48,26 @@ class Service {
 
     async create(data) {
 
-
-
         const item = await this.repo.create(data);
         if (item) {
             return new HttpResponse(item);
         }
         throw new Error('Error creating item');
     }
+
+    async delete(id) {
+
+        const item = await this.repo.delete(id);
+        if (item) {
+            // , { statusCode: 200, message: "הפריט נמחק בהצלחה" }
+            return new HttpResponse(item);
+        }
+        const error = new Error('Item not found or already deleted');
+    error.statusCode = 404; 
+    throw error;
+       
+    }
+
 
 
 

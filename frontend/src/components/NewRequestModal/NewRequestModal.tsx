@@ -1,77 +1,71 @@
-import type { FC } from 'react';
-import './NewRequestModal.scss';
-import { Form, Button, Card, Container, Col, Row } from 'react-bootstrap';
-import * as yup from 'yup';
-import { useFormik } from 'formik';
+import type { FC } from "react";
+import "./NewRequestModal.scss";
+import { Form, Button, Card, Container, Col, Row } from "react-bootstrap";
+import * as yup from "yup";
+import { useFormik } from "formik";
 // מייבאים את שני מערכי המילים הפשוטים והטיפוסים מהמודל
-import { 
-  requestStatuses, 
-  priorityOptions, 
-  type HelpRequest, 
-  type RequestStatusType, 
-  type PriorityType 
-} from '../../models/helpRequest.model';
+import {
+  type HelpRequest,
+  requestStatusesLabels,
+  priorityLabels,
+} from "../../models/helpRequest.model";
 
 interface NewRequestModalProps {}
 
 const NewRequestModal: FC<NewRequestModalProps> = () => {
-
-  // יוצרים טיפוס מותאם לטופס שמקבל זמנית ערך ריק בתחילת הדרך בשביל הבחירה
-  interface FormValues extends Omit<HelpRequest, '_id' | 'status' | 'priority'> {
-    status: RequestStatusType | '';
-    priority: PriorityType | '';
-  }
-
-  const myForm = useFormik<FormValues>({
+  const myForm = useFormik<Omit<HelpRequest, "_id">>({
     initialValues: {
-      location: { areaCode: '', name: '' },
-      problemDescription: '',
-      contactPhone: '',
-      status: '', // מתחיל ריק כדי לאלץ בחירה
+      location: { areaCode: "", name: "" },
+      problemDescription: "",
+      contactPhone: "",
+      status: "",
       peopleStuck: 1,
-      priority: '', // מתחיל ריק כדי לאלץ בחירה (מילה, לא מספר!)
-      volunteerCode: '',
+      priority: "",
+      volunteerCode: "",
     },
     validationSchema: yup.object().shape({
       location: yup.object().shape({
         areaCode: yup
           .number()
-          .transform((value, originalValue) => (originalValue === '' ? undefined : value))
-          .required('שדה חובה'),
-        name: yup.string().required('שדה חובה'),
+          .transform((value, originalValue) =>
+            originalValue === "" ? undefined : value,
+          )
+          .required("שדה חובה"),
+        name: yup.string().required("שדה חובה"),
       }),
-      problemDescription: yup.string().required('שדה חובה'),
+      problemDescription: yup.string().required("שדה חובה"),
       contactPhone: yup
         .string()
-        .required('שדה חובה')
-        .matches(/^[0-9+\- ]+$/, 'טלפון לא תקין'),
+        .required("שדה חובה")
+        .matches(/^[0-9+\- ]+$/, "טלפון לא תקין"),
       status: yup
-        .string()
-        .oneOf([...requestStatuses], 'סטטוס לא תקין') // שימוש במערך הפשוט מהמודל
-        .required('שדה חובה'),
+        .number()
+        .oneOf(Object.keys(requestStatusesLabels).map(Number), "סטטוס לא תקין")
+        .required("שדה חובה"),
       peopleStuck: yup
         .number()
-        .min(1, 'חייב להיות לפחות 1 איש')
-        .required('שדה חובה'),
+        .min(1, "חייב להיות לפחות 1 איש")
+        .required("שדה חובה"),
       priority: yup
-        .string() // שינוי ל-string כי זו מילה עכשיו!
-        .oneOf([...priorityOptions], 'עדיפות לא תקינה') // שימוש במערך הפשוט מהמודל
-        .required('שדה חובה'),
+        .number() // שינוי ל-string כי זו מילה עכשיו!
+        .oneOf(Object.keys(priorityLabels).map(Number), "עדיפות לא תקינה") // שימוש במערך הפשוט מהמודל
+        .required("שדה חובה"),
       volunteerCode: yup.string().nullable(),
     }),
     onSubmit: (values) => {
-      alert('קריאה חדשה נרשמה בהצלחה!');
-      console.log('New request payload:', values);
+      console.log("New request payload:", values);
     },
   });
 
   return (
     <div className="NewRequestModal">
       <Container className="mt-5">
-        <Card className="shadow-sm p-4 bg-light m-auto" style={{ maxWidth: '650px' }}>
+        <Card
+          className="shadow-sm p-4 bg-light m-auto"
+          style={{ maxWidth: "650px" }}
+        >
           <h3 className="mb-4 text-center">הוספת קריאה חדשה</h3>
           <Form noValidate onSubmit={myForm.handleSubmit}>
-            
             {/* מיקום ושם מקום מאוחדים לשורה אחת יפה */}
             <Row>
               <Col md={6}>
@@ -84,7 +78,12 @@ const NewRequestModal: FC<NewRequestModalProps> = () => {
                     onChange={myForm.handleChange}
                     onBlur={myForm.handleBlur}
                     placeholder="שם המקום"
-                    isInvalid={!!(myForm.touched.location?.name && myForm.errors.location?.name)}
+                    isInvalid={
+                      !!(
+                        myForm.touched.location?.name &&
+                        myForm.errors.location?.name
+                      )
+                    }
                   />
                   <Form.Control.Feedback type="invalid">
                     {myForm.errors.location?.name}
@@ -102,7 +101,12 @@ const NewRequestModal: FC<NewRequestModalProps> = () => {
                     onChange={myForm.handleChange}
                     onBlur={myForm.handleBlur}
                     placeholder="קוד אזור"
-                    isInvalid={!!(myForm.touched.location?.areaCode && myForm.errors.location?.areaCode)}
+                    isInvalid={
+                      !!(
+                        myForm.touched.location?.areaCode &&
+                        myForm.errors.location?.areaCode
+                      )
+                    }
                   />
                   <Form.Control.Feedback type="invalid">
                     {myForm.errors.location?.areaCode}
@@ -122,7 +126,12 @@ const NewRequestModal: FC<NewRequestModalProps> = () => {
                     onChange={myForm.handleChange}
                     onBlur={myForm.handleBlur}
                     placeholder="טלפון"
-                    isInvalid={!!(myForm.touched.contactPhone && myForm.errors.contactPhone)}
+                    isInvalid={
+                      !!(
+                        myForm.touched.contactPhone &&
+                        myForm.errors.contactPhone
+                      )
+                    }
                   />
                   <Form.Control.Feedback type="invalid">
                     {myForm.errors.contactPhone}
@@ -141,7 +150,12 @@ const NewRequestModal: FC<NewRequestModalProps> = () => {
                 onChange={myForm.handleChange}
                 onBlur={myForm.handleBlur}
                 placeholder="תאר את הבעיה "
-                isInvalid={!!(myForm.touched.problemDescription && myForm.errors.problemDescription)}
+                isInvalid={
+                  !!(
+                    myForm.touched.problemDescription &&
+                    myForm.errors.problemDescription
+                  )
+                }
               />
               <Form.Control.Feedback type="invalid">
                 {myForm.errors.problemDescription}
@@ -155,16 +169,26 @@ const NewRequestModal: FC<NewRequestModalProps> = () => {
                   <Form.Select
                     name="status"
                     value={myForm.values.status}
-                    onChange={myForm.handleChange}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      myForm.setFieldValue(
+                        "status",
+                        val === "" ? "" : Number(val),
+                      );
+                    }}
                     onBlur={myForm.handleBlur}
-                    isInvalid={!!(myForm.touched.status && myForm.errors.status)}
+                    isInvalid={
+                      !!(myForm.touched.status && myForm.errors.status)
+                    }
                   >
                     <option value="">בחר סטטוס</option>
-                    {requestStatuses.map((status) => (
-                      <option key={status} value={status}>
-                        {status} {/* מציג פשוט את המילה הגולמית מהמערך */}
-                      </option>
-                    ))}
+                    {Object.entries(requestStatusesLabels).map(
+                      ([key, value]) => (
+                        <option key={key} value={key}>
+                          {value} {/* מציג פשוט את המילה הגולמית מהמערך */}
+                        </option>
+                      ),
+                    )}
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
                     {myForm.errors.status}
@@ -182,7 +206,11 @@ const NewRequestModal: FC<NewRequestModalProps> = () => {
                     onChange={myForm.handleChange}
                     onBlur={myForm.handleBlur}
                     placeholder="מספר אנשים"
-                    isInvalid={!!(myForm.touched.peopleStuck && myForm.errors.peopleStuck)}
+                    isInvalid={
+                      !!(
+                        myForm.touched.peopleStuck && myForm.errors.peopleStuck
+                      )
+                    }
                   />
                   <Form.Control.Feedback type="invalid">
                     {myForm.errors.peopleStuck}
@@ -196,14 +224,23 @@ const NewRequestModal: FC<NewRequestModalProps> = () => {
                   <Form.Select
                     name="priority"
                     value={myForm.values.priority}
-                    onChange={myForm.handleChange} // פשוט ורגיל, בלי המרה למספר
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      myForm.setFieldValue(
+                        "priority",
+                        val === "" ? "" : Number(val),
+                      );
+                    }}
                     onBlur={myForm.handleBlur}
-                    isInvalid={!!(myForm.touched.priority && myForm.errors.priority)}
+                    isInvalid={
+                      !!(myForm.touched.priority && myForm.errors.priority)
+                    }
                   >
                     <option value="">בחר דחיפות</option>
-                    {priorityOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option} {/* מציג פשוט את המילה הגולמית מהמערך */}
+                    {Object.entries(priorityLabels).map(([key, value]) => (
+                      <option key={key} value={key}>
+                        {value}{" "}
+                        {/* המשתמש רואה מילה (נמוכה/בינונית), ב-value נשמר המספר */}
                       </option>
                     ))}
                   </Form.Select>

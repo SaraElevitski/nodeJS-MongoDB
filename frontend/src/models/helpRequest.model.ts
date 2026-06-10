@@ -4,9 +4,9 @@ export interface HelpRequest {
   location: RequestLocation;
   problemDescription: string;
   contactPhone: string;
-  status: RequestStatusType;
+  status: number | '';
   peopleStuck: number | '';
-  priority: PriorityType | '';
+  priority: number | '';
   volunteerCode: string;
 }
 
@@ -16,9 +16,19 @@ export interface RequestLocation {
 }
 
 
-export const requestStatuses = ['ממתין', 'בטיפול', 'הסתיים'] as const;
-export type RequestStatusType = typeof requestStatuses[number];
+
+export const requestStatusesLabels: Record<number, string> ={
+  1:'ממתין',
+2:'בטיפול',
+3:'הסתיים'
+}
 
 
-export const priorityOptions = ['נמוכה', 'בינונית', 'גבוהה', 'קריטית'] as const;
-export type PriorityType = typeof priorityOptions[number];
+export const priorityLabels: Record<number, string> = {
+  1: 'נמוכה',
+  2: 'בינונית',
+  3: 'גבוהה',
+  4: 'קריטית',
+};
+
+

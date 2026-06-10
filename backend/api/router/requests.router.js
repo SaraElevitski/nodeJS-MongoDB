@@ -1,11 +1,23 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const requestController = require('../controllers/request.controller');
+const requestController = require("../controllers/request.controller");
 
-router.get('/',requestController.getAll);
+// שליפת הקריאות
+router.get("/", requestController.getAll);
 
-router.get('/:id', requestController.getById);
+// שליפת קריאה לפי id
+router.get("/:id", requestController.getById);
 
-router.put('/:id', requestController.assignVolunteer);
+// עדכון מצב בקשה ושיוך מתנדב
+router.put("/:id/assign", requestController.assignVolunteer);
+
+// עדכון קריאה
+router.put("/:id", requestController.update);
+
+// מחיקת קריאה
+router.delete("/:id", requestController.delete);
+
+// הוספת קריאה
+router.post("/", requestController.create);
 
 module.exports = router;

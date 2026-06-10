@@ -7,8 +7,6 @@ class VolunteerService extends Service {
     }
 
 
-
-    // volunteer.service.js
     async create(data) {
         const newData = {}
         if (data.firstName)
@@ -19,6 +17,10 @@ class VolunteerService extends Service {
             newData.phone = data.phone
         if (data.specialties)
             newData.specialties = data.specialties
+        if (data.tz)
+            newData.tz = data.tz;
+        if (data.email)
+            newData.email = data.email;
 
         // צור קוד אוטומטי למתנדב ושמור אותו כ-_id
         let code = this.createCode();
@@ -32,6 +34,7 @@ class VolunteerService extends Service {
 
             return new HttpResponse(item);
         }
+       
         throw new Error('Error creating item');
     }
 
@@ -46,6 +49,7 @@ class VolunteerService extends Service {
         }
         return newCode;
     }
+
 
 }
 

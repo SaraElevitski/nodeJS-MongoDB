@@ -4,7 +4,12 @@ import volunteersService from "../../services/volunteers.service";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import helpRequestsService from "../../services/helpRequests.service";
 import type { Volunteer } from "../../models/volunteers.model";
-import {type PriorityType} from "../../models/helpRequest.model";
+import { priorityLabels } from "../../models/helpRequest.model";
+
+/* צריך : מחיקת מתנדב
+עדכון מתנדב
+*/
+
 
 interface HomeProps {}
 
@@ -16,8 +21,8 @@ const Home: FC<HomeProps> = () => {
     const fetchAllData = async () => {
       try {
         const [volunteersRes, requestsRes] = await Promise.all([
-          volunteersService.GetVolunteersList(),
-          helpRequestsService.GetRequestsList(),
+          volunteersService.getVolunteersList(),
+          helpRequestsService.getRequestsList(),
         ]);
 
         setListVolunteers(volunteersRes.data.data);
@@ -45,7 +50,7 @@ const Home: FC<HomeProps> = () => {
                   </Card.Subtitle>
                   <Card.Text>{item.problemDescription}</Card.Text>
                   <Card.Text>
-                    דחיפות:{item.priority || 'לא נקבעה'}
+                   דחיפות: {item.priority ? (priorityLabels[item.priority] || 'לא ידועה') : 'לא נקבעה'}
                   </Card.Text>
                 </Card.Body>
               </Card>

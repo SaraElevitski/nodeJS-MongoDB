@@ -13,6 +13,7 @@ const LogIn: FC<LogInProps> = () => {
       password: "",
     },
     onSubmit: (value: any) => {
+      // לבדוק האם קיים המשתמש הזה אם כן dispatch 
       alert("הכניסה בוצעה!");
     },
     validationSchema: yup.object().shape({

@@ -1,12 +1,27 @@
 import axios from "axios"
+import type { Volunteer } from "../models/volunteers.model"
 
 export default new class VolunteersService {
 
-    GetVolunteersList() {
+    // שליפת כל המתנדבים
+    getVolunteersList() {
         return axios.get("http://127.0.0.1:8080/api/volunteers")
     }
 
-    // GetCommetByMessageId(messageId:number) {
-    //     return axios.get(`https://jsonplaceholder.typicode.com/posts/${messageId}/comments`)
-    // }
+    // הוספת מתנדב
+    createVolunteer(volunteer:  Omit<Volunteer, '_id'>) {
+        return axios.post("http://127.0.0.1:8080/api/volunteers", volunteer)
+    }
+
+    // עדכון מתנדב
+    updateVolunteer(id: string, data: Volunteer){
+        return axios.put(`http://127.0.0.1:8080/api/volunteers/${id}`, data )
+
+    }
+
+    // מחיקת מתנדב
+    deleteVolunteer(id: string)
+    {
+        return axios.delete(`http://127.0.0.1:8080/api/volunteers/${id}`)
+    }
 }

@@ -4,7 +4,7 @@ import Home from './components/Home/Home'
 import LogIn from './components/LogIn/LogIn';
 import MainComp from './components/MainComp/MainComp';
 import SignUp from './components/SignUp/SignUp';
-import NewRequestModal from './components/NewRequestModal/NewRequestModal';
+
 
 
 function App() {

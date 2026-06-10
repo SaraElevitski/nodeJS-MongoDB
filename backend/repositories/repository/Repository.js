@@ -61,6 +61,20 @@ class Repository {
         }
         throw new Error('Error creating item');
     }
+
+     async delete(id) {
+
+        const item =  await this.model.findByIdAndDelete(id);
+        if (!item) {
+            const error = new Error(' item  not found');
+            error.statusCode = 404;
+            throw error;
+        }
+        return item;
+       
+    }
+
+    
 }
 
 module.exports = Repository;

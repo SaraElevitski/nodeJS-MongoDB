@@ -4,10 +4,11 @@ import { Form, Button, Card, Container, Col, Row } from "react-bootstrap";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import type { Volunteer } from "../../models/volunteers.model";
+import volunteersService from '../../services/volunteers.service';
 
 interface SignUpProps {}
 
-
+// צר
 const SignUp: FC<SignUpProps> = () => {
 
 
@@ -41,8 +42,9 @@ const validateIsraeliId = (id: string | number): boolean => {
       phone: "",
       specialties: [],
     },
-    onSubmit: (value: any) => {
-      alert("הנתונים נשלחו בהצלחה לחישוב!");
+    onSubmit: async (value) => {
+      const v = await volunteersService.createVolunteer(value);
+      alert(`המתנדב נשמר בהצלחה הקוד הוא: ${v.data.data._id}`)
     },
 
     validationSchema: yup.object().shape({
