@@ -28,8 +28,11 @@ const LogIn: FC<LogInProps> = () => {
           dispatch(setMessage({ text: "שלום מתנדב יקר", type: "primary" }));
           navigate("/helpRequests")
         }
+       
+         
       } catch (error: any) {
-        alert("המשתמש לא נמצא הרשם");
+         dispatch(setMessage({ text: "מייל או סיסמא לא נכונים", type: "danger" }));
+         console.log(error)
       }
     },
     validationSchema: yup.object().shape({

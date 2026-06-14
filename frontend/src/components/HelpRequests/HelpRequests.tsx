@@ -1,16 +1,20 @@
 import { useEffect, useState, type FC } from "react";
 import './HelpRequests.scss';
 import helpRequestsService from "../../services/helpRequests.service";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button, Modal } from "react-bootstrap";
+import NewRequestModal from "../NewRequestModal/NewRequestModal";
 import { useSelector } from "react-redux";
 import RequestCard from "../RequestCard/RequestCard";
 import type { HelpRequest } from "../../models/helpRequest.model";
+import { useNavigate } from "react-router-dom";
 
 interface HelpRequestsProps {}
 
 const HelpRequests: FC<HelpRequestsProps> = () => {
   const [listRequest, setListRequests] = useState<any[]>([]);
+  const [showNewRequest, setShowNewRequest] = useState(false);
   const user = useSelector((state: any) => state.user.user?.data);
+    const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -56,11 +60,17 @@ const HelpRequests: FC<HelpRequestsProps> = () => {
 };
 
 
+
+
+
+
+
   return (
     <div className="HelpRequests m-4">
-      <Button variant="danger" className="w-100 mb-4">
+      <Button variant="danger" className="w-100 mb-4" onClick={() => setShowNewRequest(true)}>
         הוספת קריאה
       </Button>
+      <NewRequestModal show={showNewRequest} onHide={() => setShowNewRequest(false)} />
       <Row className="g-4 align-items-stretch">
         {listRequest &&
           listRequest.map((item) => (
@@ -70,6 +80,7 @@ const HelpRequests: FC<HelpRequestsProps> = () => {
                 user={user}
                 onDeleteRequest={deleteRequest}
                 onAssign={assign}
+                onOpen={()=>navigate(`/helpRequests/${item._id}`)}
               />
             </Col>
           ))}

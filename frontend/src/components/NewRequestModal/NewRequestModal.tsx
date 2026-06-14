@@ -1,18 +1,29 @@
 import type { FC } from "react";
 import "./NewRequestModal.scss";
-import { Form, Button, Card, Container, Col, Row } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Card,
+  Container,
+  Col,
+  Row,
+  Modal,
+} from "react-bootstrap";
 import * as yup from "yup";
 import { useFormik } from "formik";
 // מייבאים את שני מערכי המילים הפשוטים והטיפוסים מהמודל
 import {
   type HelpRequest,
-ALL_STATUSES,
+  ALL_STATUSES,
   priorityLabels,
 } from "../../models/helpRequest.model";
 
-interface NewRequestModalProps {}
+interface NewRequestModalProps {
+  show: boolean;
+  onHide: () => void;
+}
 
-const NewRequestModal: FC<NewRequestModalProps> = () => {
+const NewRequestModal: FC<NewRequestModalProps> = ({ show, onHide }) => {
   const myForm = useFormik<Omit<HelpRequest, "_id">>({
     initialValues: {
       location: { areaCode: "", name: "" },
@@ -57,206 +68,188 @@ const NewRequestModal: FC<NewRequestModalProps> = () => {
     },
   });
 
+
+  const newRequest  =()=>{
+// asysc
+  }
+
   return (
-    <div className="NewRequestModal">
-      <Container className="mt-5">
-        <Card
-          className="shadow-sm p-4 bg-light m-auto"
-          style={{ maxWidth: "650px" }}
-        >
-          <h3 className="mb-4 text-center">הוספת קריאה חדשה</h3>
-          <Form noValidate onSubmit={myForm.handleSubmit}>
-            {/* מיקום ושם מקום מאוחדים לשורה אחת יפה */}
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3" controlId="location.name">
-                  <Form.Label>שם המקום</Form.Label>
+    <Modal show={show} onHide={onHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>הוספת קריאה חדשה</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="NewRequestModal">
+          <Container className="mt-2">
+            <Card
+              className="shadow-sm p-4 bg-light m-auto"
+              style={{ maxWidth: "650px" }}
+            >
+              <Form noValidate onSubmit={myForm.handleSubmit}>
+                {/* מיקום ושם מקום מאוחדים לשורה אחת יפה */}
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="location.name">
+                      <Form.Label>שם המקום</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="location.name"
+                        value={myForm.values.location.name}
+                        onChange={myForm.handleChange}
+                        onBlur={myForm.handleBlur}
+                        placeholder="שם המקום"
+                        isInvalid={
+                          !!(
+                            myForm.touched.location?.name &&
+                            myForm.errors.location?.name
+                          )
+                        }
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {myForm.errors.location?.name}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="location.areaCode">
+                      <Form.Label>קוד אזור</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="location.areaCode"
+                        value={myForm.values.location.areaCode}
+                        onChange={myForm.handleChange}
+                        onBlur={myForm.handleBlur}
+                        placeholder="קוד אזור"
+                        isInvalid={
+                          !!(
+                            myForm.touched.location?.areaCode &&
+                            myForm.errors.location?.areaCode
+                          )
+                        }
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {myForm.errors.location?.areaCode}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col md={12}>
+                    <Form.Group className="mb-3" controlId="contactPhone">
+                      <Form.Label>טלפון ליצירת קשר</Form.Label>
+                      <Form.Control
+                        type="tel"
+                        name="contactPhone"
+                        value={myForm.values.contactPhone}
+                        onChange={myForm.handleChange}
+                        onBlur={myForm.handleBlur}
+                        placeholder="טלפון"
+                        isInvalid={
+                          !!(
+                            myForm.touched.contactPhone &&
+                            myForm.errors.contactPhone
+                          )
+                        }
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {myForm.errors.contactPhone}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Form.Group className="mb-3" controlId="problemDescription">
+                  <Form.Label>תיאור הבעיה</Form.Label>
                   <Form.Control
-                    type="text"
-                    name="location.name"
-                    value={myForm.values.location.name}
+                    as="textarea"
+                    rows={4}
+                    name="problemDescription"
+                    value={myForm.values.problemDescription}
                     onChange={myForm.handleChange}
                     onBlur={myForm.handleBlur}
-                    placeholder="שם המקום"
+                    placeholder="תאר את הבעיה "
                     isInvalid={
                       !!(
-                        myForm.touched.location?.name &&
-                        myForm.errors.location?.name
+                        myForm.touched.problemDescription &&
+                        myForm.errors.problemDescription
                       )
                     }
                   />
                   <Form.Control.Feedback type="invalid">
-                    {myForm.errors.location?.name}
+                    {myForm.errors.problemDescription}
                   </Form.Control.Feedback>
                 </Form.Group>
-              </Col>
 
-              <Col md={6}>
-                <Form.Group className="mb-3" controlId="location.areaCode">
-                  <Form.Label>קוד אזור</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="location.areaCode"
-                    value={myForm.values.location.areaCode}
-                    onChange={myForm.handleChange}
-                    onBlur={myForm.handleBlur}
-                    placeholder="קוד אזור"
-                    isInvalid={
-                      !!(
-                        myForm.touched.location?.areaCode &&
-                        myForm.errors.location?.areaCode
-                      )
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {myForm.errors.location?.areaCode}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-            </Row>
+                <Row>
+               
 
-            <Row>
-              <Col md={12}>
-                <Form.Group className="mb-3" controlId="contactPhone">
-                  <Form.Label>טלפון ליצירת קשר</Form.Label>
-                  <Form.Control
-                    type="tel"
-                    name="contactPhone"
-                    value={myForm.values.contactPhone}
-                    onChange={myForm.handleChange}
-                    onBlur={myForm.handleBlur}
-                    placeholder="טלפון"
-                    isInvalid={
-                      !!(
-                        myForm.touched.contactPhone &&
-                        myForm.errors.contactPhone
-                      )
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {myForm.errors.contactPhone}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-            </Row>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="peopleStuck">
+                      <Form.Label>מספר אנשים</Form.Label>
+                      <Form.Control
+                        type="number"
+                        name="peopleStuck"
+                        value={myForm.values.peopleStuck}
+                        onChange={myForm.handleChange}
+                        onBlur={myForm.handleBlur}
+                        placeholder="מספר אנשים"
+                        isInvalid={
+                          !!(
+                            myForm.touched.peopleStuck &&
+                            myForm.errors.peopleStuck
+                          )
+                        }
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {myForm.errors.peopleStuck}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
 
-            <Form.Group className="mb-3" controlId="problemDescription">
-              <Form.Label>תיאור הבעיה</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={4}
-                name="problemDescription"
-                value={myForm.values.problemDescription}
-                onChange={myForm.handleChange}
-                onBlur={myForm.handleBlur}
-                placeholder="תאר את הבעיה "
-                isInvalid={
-                  !!(
-                    myForm.touched.problemDescription &&
-                    myForm.errors.problemDescription
-                  )
-                }
-              />
-              <Form.Control.Feedback type="invalid">
-                {myForm.errors.problemDescription}
-              </Form.Control.Feedback>
-            </Form.Group>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="priority">
+                      <Form.Label>דחיפות</Form.Label>
+                      <Form.Select
+                        name="priority"
+                        value={myForm.values.priority}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          myForm.setFieldValue(
+                            "priority",
+                            val === "" ? "" : Number(val),
+                          );
+                        }}
+                        onBlur={myForm.handleBlur}
+                        isInvalid={
+                          !!(myForm.touched.priority && myForm.errors.priority)
+                        }
+                      >
+                        <option value="">בחר דחיפות</option>
+                        {Object.entries(priorityLabels).map(([key, value]) => (
+                          <option key={key} value={key}>
+                            {value}{" "}
+                            {/* המשתמש רואה מילה (נמוכה/בינונית), ב-value נשמר המספר */}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {myForm.errors.priority}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-            <Row>
-              <Col md={4}>
-                <Form.Group className="mb-3" controlId="status">
-                  <Form.Label>סטטוס</Form.Label>
-                  <Form.Select
-                    name="status"
-                    value={myForm.values.status}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      myForm.setFieldValue(
-                        "status",
-                        val === "" ? "" : Number(val),
-                      );
-                    }}
-                    onBlur={myForm.handleBlur}
-                    isInvalid={
-                      !!(myForm.touched.status && myForm.errors.status)
-                    }
-                  >
-                    <option value="">בחר סטטוס</option>
-{ALL_STATUSES.map((status) => (
-  <option key={status} value={status}>
-    {status}
-  </option>
-                      ),
-                    )}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {myForm.errors.status}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-
-              <Col md={4}>
-                <Form.Group className="mb-3" controlId="peopleStuck">
-                  <Form.Label>מספר אנשים</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="peopleStuck"
-                    value={myForm.values.peopleStuck}
-                    onChange={myForm.handleChange}
-                    onBlur={myForm.handleBlur}
-                    placeholder="מספר אנשים"
-                    isInvalid={
-                      !!(
-                        myForm.touched.peopleStuck && myForm.errors.peopleStuck
-                      )
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {myForm.errors.peopleStuck}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-
-              <Col md={4}>
-                <Form.Group className="mb-3" controlId="priority">
-                  <Form.Label>דחיפות</Form.Label>
-                  <Form.Select
-                    name="priority"
-                    value={myForm.values.priority}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      myForm.setFieldValue(
-                        "priority",
-                        val === "" ? "" : Number(val),
-                      );
-                    }}
-                    onBlur={myForm.handleBlur}
-                    isInvalid={
-                      !!(myForm.touched.priority && myForm.errors.priority)
-                    }
-                  >
-                    <option value="">בחר דחיפות</option>
-                    {Object.entries(priorityLabels).map(([key, value]) => (
-                      <option key={key} value={key}>
-                        {value}{" "}
-                        {/* המשתמש רואה מילה (נמוכה/בינונית), ב-value נשמר המספר */}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    {myForm.errors.priority}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Button variant="primary" type="submit" className="w-100 mt-3">
-              שמירת קריאה
-            </Button>
-          </Form>
-        </Card>
-      </Container>
-    </div>
+                <Button variant="primary" type="submit" className="w-100 mt-3" onClick={newRequest}>
+                  שמירת קריאה
+                </Button>
+              </Form>
+            </Card>
+          </Container>
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 

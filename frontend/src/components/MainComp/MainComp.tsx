@@ -25,8 +25,8 @@ const MainComp: FC<MainCompProps> = () => {
           <Nav className="me-auto">
             {user ? (
               user.role == "admin" ? (
-                <Nav.Link as={NavLink} to="/ManagingVolunteers">
-                  ניהול מתנדבים
+                <Nav.Link as={NavLink} to="/Volunteers">
+                  - לרגיל יהיה רק בפוטר מתנדבים
                 </Nav.Link>
               ) : (
                 ""
@@ -34,7 +34,7 @@ const MainComp: FC<MainCompProps> = () => {
             ) : (
               ""
             )}
-            <Nav.Link as={NavLink} to="/">
+            <Nav.Link as={NavLink} to="">
               בית
             </Nav.Link>
             <Nav.Link as={NavLink} to="/helpRequests">
@@ -59,9 +59,10 @@ const MainComp: FC<MainCompProps> = () => {
         <Offcanvas.Header closeButton>
           </Offcanvas.Header>
           <Profile></Profile>
-          
-          
       </Offcanvas>
+       <Nav.Link as={NavLink} to="/Volunteers">
+                  - לרגיל יהיה רק בפוטר מתנדבים
+                </Nav.Link>
     </div>
   );
 };

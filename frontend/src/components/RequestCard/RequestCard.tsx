@@ -1,16 +1,18 @@
 import type { FC } from 'react';
 import { Card, Col, Button, Row } from "react-bootstrap";
-import { priorityLabels } from "../../models/helpRequest.model";
+import { priorityLabels, type HelpRequest } from "../../models/helpRequest.model";
 
 interface RequestCardProps {
   item: any;
   user: any;
   onDeleteRequest: (id: string) => void;
-  onAssign: (item: any) => void;
+  onAssign: (item: HelpRequest) => void;
+  onOpen:(item: HelpRequest) => void;
 }
 
 const RequestCard: FC<RequestCardProps> = (props) => (
- <Card className="h-100 w-100 shadow-sm">
+ <Card className="h-100 w-100 shadow-sm" onClick={() => props.onOpen(props.item)} style={{ cursor: 'pointer' }}>
+
     <Card.Body className="d-flex flex-column">
       <Row className="align-items-center mb-2">
         <Col className="col-10">

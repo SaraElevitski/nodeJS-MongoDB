@@ -29,7 +29,7 @@ class RequestService extends Service {
 
         const data = { status: newStatus };
 
-    if (!isAdmin ) {
+    if (!isAdmin || currentRequest.status == 'ממתין' ) {
         data.volunteerCode = volunteerCode;
     }
 

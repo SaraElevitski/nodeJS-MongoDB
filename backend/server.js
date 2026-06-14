@@ -6,6 +6,7 @@ const requestRouter = require('./api/router/requests.router.js');
 const volunteerRouter = require('./api/router/volunteers.router.js');
 const statusRouter = require('./api/router/statuses.router.js');
 const priorityRouter = require('./api/router/priorities.router.js');
+const reviewRouter = require('./api/router/reviews.router.js');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/api/requests', requestRouter);
 app.use('/api/areas', areaRouter);
 app.use('/api/statuses', statusRouter);
 app.use('/api/priorities', priorityRouter);
+app.use('/api/reviews', reviewRouter);
 
 
 app.use((err, req, res, next) => {

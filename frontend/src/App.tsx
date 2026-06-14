@@ -4,23 +4,34 @@ import Home from "./components/Home/Home";
 import LogIn from "./components/LogIn/LogIn";
 import MainComp from "./components/MainComp/MainComp";
 import VolunteerForm from "./components/VolunteerForm/VolunteerForm";
-import ManagingVolunteers from "./components/ManagingVolunteers/ManagingVolunteers";
 import HelpRequests from "./components/HelpRequests/HelpRequests";
 import Profile from "./components/Profile/Profile";
 import Message from "./components/Message/Message";
+import React from "react";
 
-
+const VolunteersLazy = React.lazy(
+    () => import("./components/Volunteers/Volunteers"),
+  );
 function App() {
+  
+
   return (
     <>
-    <Message></Message>
+      <Message></Message>
       <Routes>
-        <Route path="/" element={<MainComp></MainComp>}>
+        <Route
+          path="/"
+          element={
+            <MainComp>
+            </MainComp>
+          }
+        >
+          <Route path="/" element={<Home></Home>}></Route>
           <Route
-            path="ManagingVolunteers"
-            element={<ManagingVolunteers></ManagingVolunteers>}
+            path="Volunteers"
+            element={<VolunteersLazy></VolunteersLazy>}
           ></Route>
-          <Route index element={<Home></Home>}></Route>
+          
           <Route
             path="helpRequests"
             element={<HelpRequests></HelpRequests>}
@@ -32,8 +43,7 @@ function App() {
           ></Route>
           <Route path="profile" element={<Profile></Profile>}></Route>
         </Route>
-
-        
+{/* <Route path="helpRequests/:id" element={<RequestDetails></RequestDetails>}></Route> */}
         {/* <Route path='*' element={<NotFound></NotFound>}></Route> */}
       </Routes>
     </>
